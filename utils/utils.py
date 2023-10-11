@@ -8,7 +8,7 @@ import numpy as np
 import pickle
 import sys
 import os
-from config import Config
+from utils.config import Config
 seed = 69
 #tf.random.set_random_seed(seed=seed)
 

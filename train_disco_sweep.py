@@ -6,7 +6,7 @@ import numpy as np
 
 # sys.path.insert(0, 'utils/')
 # sys.path.insert(0, 'model/')
-from model.disco import disco
+from model.disco import DISCO
 from utils.config import Config
 from utils.utils import save_object, calc_mode, D_KL,get_config_file,get_params,read_data
 from sklearn.metrics import accuracy_score,classification_report,f1_score
@@ -191,7 +191,7 @@ def calc_stats(model, Xi_, Yi_, Ya_, Y_, A_, I_, batch_size, agg_type="mode",
 
 
 def train_disco(data, simulation_params, disco_model_params, params):
-    model = disco(xi_dim=data["n_xi"], yi_dim=data["yi_dim"], ya_dim=data["ya_dim"], y_dim=data["y_dim"],
+    model = DISCO(xi_dim=data["n_xi"], yi_dim=data["yi_dim"], ya_dim=data["ya_dim"], y_dim=data["y_dim"],
                   a_dim=data["n_a"],
                   lat_dim=disco_model_params["lat_dim"], act_fx=disco_model_params["act_fx"],
                   init_type=disco_model_params["weight_init_scheme"],
