@@ -1,16 +1,9 @@
-import pdb
 import os
-import sys, getopt, optparse
-import pickle
+import sys, getopt
 import tensorflow as tf
 import numpy as np
 import pandas as pd
-import tensorflow as tf
-# sys.path.insert(0, 'utils/')
-# sys.path.insert(0, 'model/')
-# sys.path.append('../utils')
-from model.disco import DISCO
-from utils.utils import save_object, sample_gaussian, load_object, calc_mode, gen_data_plot
+from utils.utils import load_object
 from collections import Counter
 from sklearn.metrics import accuracy_score,classification_report,f1_score
 import math 
@@ -23,7 +16,6 @@ matplotlib.use('Agg')
 from matplotlib import pyplot as plt 
 
 
-import pdb
 import wandb
 from wandb_creds import wandb_creds 
 os.environ["WANDB_API_KEY"] = wandb_creds()
@@ -278,8 +270,7 @@ def main():
     results['f1_macro'],results['f1_micro'],results['f1_weighted'],results['precision'],results['recall'] = measure_f1(empirical_labels,predicitions)
     results['timestamp'] = datetime.datetime.now()
     print("KL {0} | Accuracy {1} | F1 macro {2} | F1 micro {3} | F1 weighted {4} | Precision {5} | Recall {6}".format(results['KL'],results['accuracy'],results["f1_macro"], results['f1_micro'],results['f1_weighted'],results['precision'],results['recall']))
-    # write_model_logs_to_json(data_dir,results,"evaluation_logs")
-    # write_results_to_wandb(wandb_name,results,"PLDL-NN",dataset_name)
+    write_results_to_wandb(wandb_name,results,"DisCo",dataset_name)
     pd.DataFrame(data_to_write).to_excel(data_dir+"/preds.xlsx")
 
 

@@ -1,6 +1,7 @@
 import os
 import tensorflow as tf
-from train_disco_sweep import train_disco,get_params,read_data
+from train_disco_sweep import train_disco
+from utils.utils import get_params,read_data
 import argparse
 
 import pdb

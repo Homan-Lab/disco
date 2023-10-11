@@ -7,6 +7,8 @@ import tensorflow as tf
 import numpy as np
 import pickle
 import sys
+import os
+from config import Config
 seed = 69
 #tf.random.set_random_seed(seed=seed)
 
@@ -268,3 +270,111 @@ def gen_data_plot(Xn, Yn, use_tsne=False, fname="Xi", out_dir=""):
     plt.grid()
     plt.savefig("{0}{1}.pdf".format(out_dir,fname))
     plt.clf()
+
+
+def get_config_file(options):
+    # Collect arguments from argv
+    cfg_fname = None
+    use_gpu = False
+    gpu_id = -1
+    for opt, arg in options:
+        if opt in ("--cfg_fname"):
+            cfg_fname = arg.strip()
+        elif opt in ("--gpu_id"):
+            gpu_id = int(arg.strip())
+            use_gpu = True
+    mid = gpu_id
+    if use_gpu:
+        print(" > Using GPU ID {0}".format(mid))
+        os.environ["CUDA_VISIBLE_DEVICES"] = "{0}".format(mid)
+        gpu_tag = '/GPU:0'
+    else:
+        os.environ["CUDA_VISIBLE_DEVICES"] = "-1"
+        gpu_tag = '/CPU:0'
+
+    return cfg_fname, gpu_tag
+
+
+def get_params(cfg_fname):
+    args = Config(cfg_fname)
+    params = {
+        "xi_fname": args.getArg("xi_fname"),
+        "yi_fname": args.getArg("yi_fname"),
+        "ya_fname": args.getArg("ya_fname"),
+        "i_fname": args.getArg("i_fname"),
+        "a_fname": args.getArg("a_fname"),
+        "y_fname": args.getArg("y_fname"),
+        "dev_xi_fname": args.getArg("dev_xi_fname"),
+        "dev_yi_fname": args.getArg("dev_yi_fname"),
+        "dev_ya_fname": args.getArg("dev_ya_fname"),
+        "dev_i_fname": args.getArg("dev_i_fname"),
+        "dev_a_fname": args.getArg("dev_a_fname"),
+        "dev_y_fname": args.getArg("dev_y_fname"),
+        "out_dir": args.getArg("out_dir"),
+        "dataset": args.getArg("dataset")
+    }
+
+    simulation_params = {
+        "n_epoch": int(args.getArg("n_epoch")),  # 100 #200 #500 #200 #50
+        "batch_size": int(args.getArg("batch_size")),  # 100 #256 #128 #64 #256 #128
+        "save_every": int(args.getArg("save_every")),  # 10
+        "eval_every": int(args.getArg("eval_every"))
+    }
+
+    disco_model_params = {
+        "act_fx": args.getArg("act_fx"),
+        "weight_init_scheme": args.getArg("weight_init_scheme"),
+        "lat_dim": int(args.getArg("lat_dim")),  # 100 #64 #32
+        "opt_type": args.getArg("opt_type"),
+        "learning_rate": float(args.getArg("learning_rate")),
+        # "max_param_norm": float(args.getArg("max_param_norm")),
+        "update_radius": float(args.getArg("update_radius")),
+        "lat_fusion_type": args.getArg("lat_fusion_type"),  # "concat" "sum"
+        "lat_i_dim": int(args.getArg("lat_i_dim")),  # 100
+        "lat_a_dim": int(args.getArg("lat_a_dim")),  # 50
+        "drop_p": float(args.getArg("drop_p")),
+        "gamma_i": float(args.getArg("gamma_i")),
+        "gamma_a": float(args.getArg("gamma_a"))
+    }
+
+    return params, simulation_params, disco_model_params
+
+
+def read_data(params):
+    data = {}
+    data["Xi"] = np.load(params["xi_fname"], allow_pickle=True)
+    data["Y"] = np.load(params["y_fname"], allow_pickle=True)
+    gen_data_plot(data["Xi"], data["Y"], use_tsne=False)
+    data["Yi"] = np.load(params["yi_fname"])
+    data["Ya"] = np.load(params["ya_fname"])
+    data["I"] = np.load(params["i_fname"])
+    data["A"] = np.load(params["a_fname"])
+    data["dev_Xi"] = None
+    data["dev_Yi"] = None
+    data["dev_Ya"] = None
+    data["dev_Y"] = None
+    data["dev_I"] = None
+    data["dev_A"] = None
+    if params["dev_y_fname"] is not None:
+        data["dev_Xi"] = np.load(params["dev_xi_fname"])
+        data["dev_Yi"] = np.load(params["dev_yi_fname"])
+        data["dev_Ya"] = np.load(params["dev_ya_fname"])
+        data["dev_Y"] = np.load(params["dev_y_fname"])
+        data["dev_I"] = np.load(params["dev_i_fname"])
+        data["dev_A"] = np.load(params["dev_a_fname"])
+    # automatically count num of total items, total annotators, and get design matrix dimensions
+    data["n_i"] = np.max(data["I"]) + 1  # 2000 # number items
+    data["n_a"] = np.max(data["A"]) + 1  # 50 # number annotators
+    data["yi_dim"] = data["Yi"].shape[1]
+    data["ya_dim"] = data["Ya"].shape[1]
+    data["y_dim"] = data["Y"].shape[1]
+    data["n_xi"] = data["Xi"].shape[1]
+
+    print("Xi.shape = ", data["Xi"].shape)
+    print("Yi.shape = ", data["Yi"].shape)
+    print("Y.shape = ", data["Y"].shape)
+    print("Ya.shape = ", data["Ya"].shape)
+    print("I.shape = ", data["I"].shape)
+    print("A.shape = ", data["A"].shape)
+
+    return data
