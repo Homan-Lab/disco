@@ -11,7 +11,7 @@ class Config:
     arg_name = arg_value
     arg_name = arg_value # side comment that will be stripped off
 
-    @author: Alex Ororbia
+     @author DisCo Authors
     """
 
     def __init__(self, fname):

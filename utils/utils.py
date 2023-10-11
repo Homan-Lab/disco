@@ -1,7 +1,7 @@
 """
 Utilities function file
 
-@author: Alex Ororbia
+@author DisCo Authors
 """
 import tensorflow as tf
 import numpy as np
@@ -59,7 +59,7 @@ def D_KL(px, qx, keep_batch=False):
     -> p(x) is the target channel/distribution (we wish to compress)
     <br>
     Notes that this function was derived from:  https://arxiv.org/pdf/1404.2000.pdf
-    @author Alexander Ororbia
+    @author DisCo Authors
     '''
     eps = 1e-6
     px_ = tf.clip_by_value(px, eps, 1.0-eps)
@@ -78,7 +78,7 @@ def D_KL(px, qx, keep_batch=False):
 def D_KL_(qx, px, keep_batch=False):
     '''
     General KL divergence between probability dist q(x) and p(x), i.e., KL(q||p)
-    @author Alexander Ororbia
+    @author DisCo Authors
     '''
     eps = 1e-6
     qx_ = tf.clip_by_value(qx, eps, 1.0-eps)
@@ -96,7 +96,7 @@ def D_KL_(qx, px, keep_batch=False):
 def mse(x_true, x_pred, keep_batch=False):
     '''
     Mean Squared Error
-    @author Alexander Ororbia
+    @author DisCo Authors
     '''
     diff = x_pred - x_true
     se = diff * diff # 0.5 # squared error
@@ -114,7 +114,7 @@ def drop_out(input, rate=0.0, seed=69):
         -> scale the values of the output by 1/(1-rate) which allows us to just
            set rate to 0 at test time with no further changes needed to compute the
            expectation of the activation output
-        @author Alexander G. Ororbia
+        @author DisCo Authors
     """
     mask = tf.math.less_equal( tf.random.uniform(shape=(input.shape[0],input.shape[1]), minval=0.0, maxval=1.0, dtype=tf.float32, seed=seed),(1.0 - rate))
     mask = tf.cast(mask, tf.float32) * (1.0 / (1.0 - rate))
