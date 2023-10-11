@@ -10,7 +10,7 @@ class DISCO:
     """
         The proposed DisCo model. See paper for details.
 
-        @author Alexander G. Ororbia
+        @author DisCo Authors
     """
     def __init__(self, xi_dim, yi_dim, ya_dim, y_dim, a_dim, lat_i_dim=20, lat_a_dim=30,
                  lat_dim=10, act_fx="softsign", init_type="gaussian", name="disco",

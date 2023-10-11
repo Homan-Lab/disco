@@ -31,7 +31,7 @@ wandb_entity = wandb_entity_value()
     $ python evaluate_ldlnm.py --data_dir="../data/" --model_fname="../data/trained_model.ldlnm"
     $ python evaluate_ldlnm.py --data_dir=./experimental_data/jobQ1_BOTH/ --model_fname=./experimental_data/jobQ1_BOTH/trained_model.ldlnm --split_name=dev --empirical_fname=./datasets/jobQ123_BOTH/processed/jobQ1_BOTH/jobQ1_BOTH_dev_AIL.csv
 
-    @author Alexander G. Ororbia
+    @author DisCo Authors
 """
 
 
