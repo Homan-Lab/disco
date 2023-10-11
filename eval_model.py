@@ -17,9 +17,9 @@ from matplotlib import pyplot as plt
 
 
 import wandb
-from wandb_creds import wandb_creds 
+from wandb_creds import wandb_creds,wandb_entity_value
 os.environ["WANDB_API_KEY"] = wandb_creds()
-wandb_entity = "disco_exps"
+wandb_entity = wandb_entity_value()
 
 """
     Trains a prototype label distributional learner (LDL) which is a simple
@@ -143,7 +143,11 @@ def write_model_logs_to_json(MODEL_LOG_DIR, results_dict, output_name):
 
 def write_results_to_wandb(wandb_name,results,model_type,dataset):
 
+    import pdb
+    pdb.set_trace()
+    
     wandb.init(project=wandb_name, entity=wandb_entity,name=dataset)
+
     wandb.config = {
         "model": model_type,
         "dataset": dataset

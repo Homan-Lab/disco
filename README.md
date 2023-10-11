@@ -11,7 +11,7 @@ Annotator disagreement is common whenever human judgment is needed for supervise
 In order to run the pipeline;
 1. Download the dataset needed and preprocess it. We use the dices_990 dataset for this purpose. [Repo](https://github.com/google-research-datasets/dices-dataset).  The preprocess file for this dataset is included in the `preprocess_dices.py` file. 
 2.  Setup the python environment. 
-3. Setup wandb and a wandb sweep. The instructions for the sweep is included in WandB Sweeps section.
+3. Setup wandb and a wandb sweep. The instructions for the sweep is included in WandB Sweeps section. Remember to change the `wandb_creds.py` file with your credentials. 
 4.  Run the experiments as mentioned in `run_dices_exp.sh`. 
 5. Results should automatically log to the wandb project.  
 

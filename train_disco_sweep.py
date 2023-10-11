@@ -225,6 +225,7 @@ def train_disco(data, simulation_params, disco_model_params, params):
     else:
         print(
             " {0}: Fit.Acc = {1}  E.Acc = {2} L = {3}  KLi = {4}  KLa = {5}".format(-1, acc, agg_acc, L, KLi, KLa))
+    simulation_params["n_epoch"] = 5
     for e in range(simulation_params["n_epoch"]):
         ptrs = np.random.permutation(data["Y"].shape[0])
         ptr_s = 0
@@ -274,12 +275,12 @@ def train_disco(data, simulation_params, disco_model_params, params):
                     " {0}: Fit.Acc = {1}  E.Acc = {2} L = {3}  KLi = {4}  KLa = {5}".format(e, acc, agg_acc, L, KLi,
                                                                                             KLa))
         if e % simulation_params["save_every"] == 0:  # save a checkpoint model
-            save_object(model, "{0}trained_model.disco".format(params["out_dir"]))
+            save_object(model, "{0}/trained_model.disco".format(params["out_dir"]))
 
     ################################################################################
     # save final model to disk
     ################################################################################
-    save_object(model, "{0}trained_model.disco".format(params["out_dir"]))
+    save_object(model, "{0}/trained_model.disco".format(params["out_dir"]))
     if data["dev_Y"] is not None:
         wandb_logging_dev(params,e,agg_acc, train_agg_KL, dev_agg_acc, dev_agg_KL, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
     else:
