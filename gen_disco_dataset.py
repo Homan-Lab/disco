@@ -12,16 +12,11 @@ import pdb
 """
     Transforms label dist files into a set of design matrices for easier
     handling in the training and analysis scripts.
-    python gen_ldl_dataset.py --inp_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/datasets/jobQ123_BOTH/processed/jobQ1_BOTH/ --out_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/experimental_data/jobQ1_BOTH/ --annotator_item_fname=jobQ1_BOTH_train_AIL.txt --item_lab_fname=jobQ1_BOTH_train_IL.txt --annotator_lab_fname=jobQ1_BOTH_train_AL.txt --embeddings=Xi_train.npy
-    python gen_ldl_dataset.py --inp_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/datasets/jobQ123_BOTH/processed/jobQ1_BOTH/ --out_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/experimental_data/jobQ1_BOTH/ --annotator_item_fname=jobQ1_BOTH_dev_AIL.csv --item_lab_fname=jobQ1_BOTH_dev_IL.csv --annotator_lab_fname=jobQ1_BOTH_dev_AL.csv --embeddings=Xi_dev.npy
-
-    python gen_ldl_dataset.py --inp_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/datasets/jobQ123_BOTH/processed/jobQ2_BOTH/ --out_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/experimental_data/jobQ2_BOTH/ --annotator_item_fname=jobQ2_BOTH_train_AIL.csv --item_lab_fname=jobQ2_BOTH_train_IL.csv --annotator_lab_fname=jobQ2_BOTH_train_AL.csv --embeddings=Xi_train.npy
-    python gen_ldl_dataset.py --inp_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/datasets/jobQ123_BOTH/processed/jobQ2_BOTH/ --out_dir=/home/cyril/DataDrive/Experiments/pldl/modeling_annotators_NN/experimental_data/jobQ2_BOTH/ --annotator_item_fname=jobQ2_BOTH_dev_AIL.csv --item_lab_fname=jobQ2_BOTH_dev_IL.csv --annotator_lab_fname=jobQ2_BOTH_dev_AL.csv --embeddings=Xi_dev.npy
     Example use:
-    $ python gen_ldl_dataset.py --inp_dir=../ --out_dir=../data/ --annotator_item_fname=annotator_items.txt
+    $ python gen_disco_dataset.py --inp_dir=../ --out_dir=../data/ --annotator_item_fname=annotator_items.txt
                                 --item_lab_fname=item_labels.txt --annotator_lab_fname=annotator_labels.txt
 
-    @author Alexander G. Ororbia
+    @author DisCo Authors
 """
 
 def create_folder(folderpath):
@@ -61,8 +56,8 @@ def fileToMap(fname):
     return map
 
 '''
-out_dir = "/home/agoroot/IdeaProjects/labdist_learn/data/"
-inp_dir = "/home/agoroot/IdeaProjects/labdist_learn/"
+out_dir = "/experimental_data/"
+inp_dir = "/datasets/"
 annotator_item_fname = "{0}{1}".format(inp_dir,"annotator_items.txt")
 item_lab_fname = "{0}{1}".format(inp_dir,"item_labels.txt")
 annotator_lab_fname = "{0}{1}".format(inp_dir,"annotator_labels.txt")
@@ -174,24 +169,6 @@ Ai = np.expand_dims(np.asarray(Ai),axis=1)
 print(n_i)
 Yn = tf.cast(Y,dtype=tf.float32)
 
-# seed = 69
-# stddev = 0.2
-# n_emb = 64 #100
-# M = tf.random.normal([nC,n_emb], stddev=stddev, seed=seed)
-# V = tf.math.abs( tf.random.normal([nC,n_emb], stddev=stddev, seed=seed) )
-# Yin = tf.cast(Yi,dtype=tf.float32)
-# Yan = tf.cast(Ya,dtype=tf.float32)
-# # mu = tf.matmul(Yn, M) + tf.matmul(tf.cast(Yi,dtype=tf.float32), M)
-# # var = tf.matmul(Yn, V)
-# mu = tf.matmul(Yin, M) + tf.matmul(Yan, M) + tf.matmul(Yn, M)
-# var = tf.matmul(Yin, V) + tf.matmul(Yan, V) + tf.matmul(Yn, V)
-# sig = tf.math.sqrt(var)
-# eps = tf.random.normal([Yi.shape[0],n_emb], stddev=1.0, seed=seed)
-# Xi = mu + sig * eps
-# #Xi = scale_feat(Xi)
-# print(tf.reduce_min(Xi))
-# print(tf.reduce_max(Xi))
-# Xi = Xi.numpy()
 
 Xi = X
 # save design matrices to disk
