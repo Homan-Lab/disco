@@ -44,7 +44,6 @@ def wandb_logging_dev(disco_model_params,epoch,agg_acc, KLi, dev_agg_acc, dev_KL
         "dev recall": dev_recall_macro,
         "epoch": epoch,
         "dataset": disco_model_params['dataset']
-        # 'model_params': disco_model_params
         }
 
     # logging accuracy
@@ -60,7 +59,6 @@ def wandb_logging_train(disco_model_params,epoch,agg_acc, KLi, f1_macro, precisi
         "train recall": recall_macro,
         "epoch": epoch,
         "dataset": disco_model_params['dataset']
-        # 'model_params': disco_model_params
         }
 
     # logging accuracy
@@ -263,7 +261,7 @@ def train_disco(data, simulation_params, disco_model_params, params):
                                                                            data["dev_Ya"], data["dev_Y"], data["dev_A"],
                                                                            data["dev_I"],
                                                                            simulation_params["batch_size"])
-                wandb_logging_dev(disco_model_params,e,agg_acc, train_agg_KL, dev_agg_acc, dev_agg_KL, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
+                wandb_logging_dev(params,e,agg_acc, train_agg_KL, dev_agg_acc, dev_agg_KL, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
                 print(" {0}: Fit.Acc = {1} E.Acc = {2} L = {3} | Dev.Acc = {4} E.Acc = {5}  KL = {6} ".format(e, acc,
                                                                                                               agg_acc,
                                                                                                               dev_acc,
@@ -271,7 +269,7 @@ def train_disco(data, simulation_params, disco_model_params, params):
                                                                                                               dev_agg_acc,
                                                                                                               dev_agg_KL))
             else:
-                wandb_logging_train(disco_model_params,e,agg_acc, train_agg_KL, f1_macro, precision_macro, recall_macro)
+                wandb_logging_train(params,e,agg_acc, train_agg_KL, f1_macro, precision_macro, recall_macro)
                 print(
                     " {0}: Fit.Acc = {1}  E.Acc = {2} L = {3}  KLi = {4}  KLa = {5}".format(e, acc, agg_acc, L, KLi,
                                                                                             KLa))
@@ -283,13 +281,9 @@ def train_disco(data, simulation_params, disco_model_params, params):
     ################################################################################
     save_object(model, "{0}trained_model.disco".format(params["out_dir"]))
     if data["dev_Y"] is not None:
-        wandb_logging_dev(disco_model_params,e,agg_acc, train_agg_KL, dev_agg_acc, dev_agg_KL, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
+        wandb_logging_dev(params,e,agg_acc, train_agg_KL, dev_agg_acc, dev_agg_KL, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
     else:
-        wandb_logging_train(disco_model_params,e,agg_acc, train_agg_KL, f1_macro, precision_macro, recall_macro)
-    # wandb_logging(disco_model_params,e,agg_acc, KLi, dev_agg_acc, dev_KLi, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
-    # write_to_wandb(disco_model_params,agg_acc, KLi, dev_agg_acc, dev_KLi, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro)
-    #return agg_acc, KLi, dev_agg_acc, dev_KLi, f1_macro, dev_f1_macro, precision_macro, dev_precision_macro, recall_macro, dev_recall_macro
-
+        wandb_logging_train(params,e,agg_acc, train_agg_KL, f1_macro, precision_macro, recall_macro)
 
 def read_wandb_sweep_id(sweep_id,params, simulation_params, gpu_tag,run_count,disco_model_params):
     data = read_data(params)
